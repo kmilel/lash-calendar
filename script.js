@@ -45,10 +45,7 @@ function renderCalendar(side) {
     const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
     weekdays.forEach(day => {
         const el = document.createElement("div");
-        el.style.textAlign = "center";
-        el.style.fontWeight = "bold";
-        el.style.fontSize = "12px";
-        el.style.color = "#666";
+        el.classList.add("weekday");
         el.textContent = day;
         container.appendChild(el);
     });
@@ -56,12 +53,16 @@ function renderCalendar(side) {
     const firstDay = new Date(year, month, 1);
     let startOffset = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
 
-    // Пустые ячейки
+    // Пустые ячейки до первого дня
     for (let i = 0; i < startOffset; i++) {
         container.appendChild(document.createElement("div"));
     }
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Сегодняшняя дата (для подсветки)
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
     for (let day = 1; day <= daysInMonth; day++) {
         const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
@@ -70,18 +71,40 @@ function renderCalendar(side) {
         cell.dataset.date = dateStr;
         cell.dataset.side = side;
 
+        // Подсвечиваем сегодняшний день
+        if (dateStr === todayStr) {
+            cell.classList.add("today");
+        }
+
         if (disabledDates[side].includes(dateStr)) {
             cell.classList.add("disabled");
         } else {
             const dayBookings = bookings[side][dateStr] || [];
+
             if (dayBookings.length > 0) {
                 cell.classList.add("booked");
+
+                // Группируем записи по времени
+                const grouped = {};
+                dayBookings.forEach(b => {
+                    if (!grouped[b.time]) grouped[b.time] = 0;
+                    grouped[b.time]++;
+                });
+
+                // Формируем список строк «18:00 ×2»
+                const timesHtml = Object.entries(grouped)
+                    .sort((a, b) => a[0].localeCompare(b[0]))
+                    .map(([time, count]) => {
+                        return `<div class="cell-time">${time}${count > 1 ? ` ×${count}` : ""}</div>`;
+                    })
+                    .join("");
+
                 cell.innerHTML = `
-                    <div>${day}</div>
-                    <div class="client-name">${dayBookings.length} зап.</div>
+                    <div class="cell-day">${day}</div>
+                    <div class="cell-times">${timesHtml}</div>
                 `;
             } else {
-                cell.textContent = day;
+                cell.innerHTML = `<div class="cell-day">${day}</div>`;
             }
 
             cell.addEventListener("click", () => openModal(dateStr, side));
@@ -127,10 +150,10 @@ function renderBookingsList() {
         const item = document.createElement("div");
         item.classList.add("booking-item");
         item.innerHTML = `
-            <div><span class="time">${b.time}</span> — <span class="name">${b.name}</span></div>
-            <div class="phone">${b.phone}</div>
-            ${b.note ? `<div class="note">${b.note}</div>` : ""}
             <button class="delete-btn" data-index="${index}">✕</button>
+            <div><span class="time">${b.time}</span> — <span class="name">${b.name}</span></div>
+            ${b.phone ? `<div class="phone">${b.phone}</div>` : ""}
+            ${b.note ? `<div class="note">${b.note}</div>` : ""}
         `;
         list.appendChild(item);
     });
