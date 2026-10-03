@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Календарь записей</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    </head>
+    <body>
+        <h1>Записи</h1>
+
+        <div class="calendar-container">
+            <div class="calendar-wrapper">
+                <h2>Салон</h2>
+                <div class="calendar-nav">
+                    <button id="prev-left">←</button>
+                    <span id="month-left"></span>
+                    <button id="next-left">→</button>
+                </div>
+                <div class="calendar" id="calendar-left"></div>
+            </div>
+            <div class="calendar-wrapper">
+                <h2>Студия</h2>
+                <div class="calendar-nav">
+                    <button id="prev-right">←</button>
+                    <span id="month-right"></span>
+                    <button id="next-right">→</button>
+                </div>
+                <div class="calendar" id="calendar-right"></div>
+            </div>
+        </div>
+
+        
+
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <span class="close" id="close-modal">&times;</span>
+                <h3>Записи на <span id="modal-date"></span></h3>
+
+                <div id="booking-list"></div>
+
+                <button id="add-booking-btn" class="add-btn">➕ Добавить запись</button>
+
+                <form id="client-form" class="hidden">
+                    <h4>Новая запись</h4>
+                    <input type="text" id="client-name" placeholder="Имя" required>
+                    <input type="tel" id="client-phone" placeholder="Телефон">
+                    <input list="time-options" id="client-time" placeholder="Выберите время" required>
+                    <datalist id="time-options">
+                        <option value="10:00">
+                        <option value="10:30">
+                        <option value="11:00">
+                        <option value="11:30">
+                        <option value="12:00">
+                        <option value="12:30">
+                        <option value="13:00">
+                        <option value="13:30">
+                        <option value="14:00">
+                        <option value="14:30">
+                        <option value="15:00">
+                        <option value="15:30">
+                        <option value="16:00">
+                        <option value="16:30">
+                        <option value="17:00">
+                        <option value="17:30">
+                        <option value="18:00">
+                        <option value="18:30">
+                        <option value="19:00">
+                        <option value="19:30">
+                        <option value="20:00">
+                    </datalist>
+                    <textarea id="client-note" placeholder="Комментарий"></textarea>
+                    <button type="submit">Сохранить</button>
+                    <button type="button" id="cancel-form" class="cancel-btn">Отмена</button>
+                </form>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
