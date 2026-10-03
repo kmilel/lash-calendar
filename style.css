@@ -30,7 +30,7 @@ h1 {
     background-color: rgba(240, 248, 255, 0.715);
     padding: 20px;
     border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08)
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .calendar-wrapper h2 {
@@ -66,62 +66,102 @@ h1 {
     font-size: 16px;
 }
 
+/* ================== КАЛЕНДАРЬ ================== */
+
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    gap: 4px;
     margin-top: 10px;
 }
 
-.day {
-    padding: 8px 4px;
+.weekday {
     text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    color: #888;
+    padding: 4px 0;
+}
+
+.day {
+    padding: 4px;
     border-radius: 8px;
     cursor: pointer;
     background: #eef2f6;
     transition: 0.2s;
-    min-height: 55px;
-    font-size: 14px;
+    min-height: 72px;
+    font-size: 13px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow: hidden;
 }
 
 .day:hover {
     background: #eabbbb;
-    transform: scale(1.03);
+    transform: scale(1.02);
 }
 
 .day.disabled {
     background: #d0e0f0;
-    color: #777;
+    color: #999;
     cursor: not-allowed;
 }
 
 .day.disabled:hover {
     transform: none;
-    background: #c0c0c0;
+    background: #d0e0f0;
 }
 
 .day.booked {
-    background: #935e8a;
-    font-weight: bold;
-    border: 2px solid #cb73cd;
+    background: #cfe8f7;
+    border: 1px solid #9bc9e6;
 }
 
-.day .client-name {
-    font-size: 10px;
-    color: #e36bb3;
-    margin-top: 3px;
+.day.today {
+    background: #dfbeba;
+    color: white;
+    font-weight: bold;
 }
+
+.day.today .cell-time {
+    background: rgba(255, 255, 255, 0.85);
+    color: #1a3a52;
+}
+
+.cell-day {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 2px;
+    align-self: flex-start;
+}
+
+.cell-times {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.cell-time {
+    background: #eaf6ff;
+    border-radius: 4px;
+    padding: 1px 4px;
+    font-size: 10px;
+    color: #1a3a52;
+    white-space: nowrap;
+}
+
+/* ================== МОДАЛЬНОЕ ОКНО ================== */
 
 .modal {
     display: none;
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -192,6 +232,8 @@ h1 {
     color: white;
 }
 
+/* ================== СПИСОК ЗАПИСЕЙ ================== */
+
 #booking-list {
     margin: 15px 0;
     max-height: 250px;
@@ -206,6 +248,7 @@ h1 {
     border-radius: 6px;
     font-size: 14px;
     position: relative;
+    padding-right: 36px; /* чтобы текст не залезал под кнопку удаления */
 }
 
 .booking-item .time {
@@ -229,23 +272,29 @@ h1 {
     margin-top: 3px;
 }
 
-.delete-btn {
+/* Кнопка удаления — маленькая, сбоку */
+.modal-content .delete-btn {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 50%;
     background: #ff5c5c;
     color: white;
-    border: dashed rgb(140, 18, 41);
-    border-radius: 20px;
-    width: 24px;
-    height: 24px;
+    font-size: 11px;
+    line-height: 22px;
+    text-align: center;
     cursor: pointer;
-    font-size: 12px;
-    line-height: 1;
+    transition: 0.2s;
 }
 
-.delete-btn:hover {
+.modal-content .delete-btn:hover {
     background: rgb(125, 66, 77);
+    transform: scale(1.1);
 }
 
 .no-bookings {
@@ -255,6 +304,8 @@ h1 {
     padding: 15px;
 }
 
+/* ================== КНОПКИ ================== */
+
 .add-btn {
     background: rgb(192, 147, 147);
     color: rgb(140, 18, 41);
@@ -262,6 +313,7 @@ h1 {
 
 .add-btn:hover {
     background: rgb(125, 66, 77);
+    color: white;
 }
 
 .cancel-btn {
@@ -271,6 +323,7 @@ h1 {
 
 .cancel-btn:hover {
     background: rgb(139, 107, 107);
+    color: white;
 }
 
 .hidden {
