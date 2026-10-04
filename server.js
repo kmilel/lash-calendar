@@ -7,8 +7,8 @@ app.use(cors());
 app.use(express.json());
 
 // ⚠️ ЗАМЕНИ НА СВОИ ДАННЫЕ
-const BOT_TOKEN = '8825122842:AAHotijJD7aFU_q8DimYY9nnPv2WFBogBv8';
-const CHAT_ID = '860736174';
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const CHAT_ID = process.env.CHAT_ID;
 
 const bot = new TelegramBot(BOT_TOKEN, { polling: false });
 
