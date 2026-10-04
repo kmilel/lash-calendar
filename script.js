@@ -221,6 +221,20 @@ document.getElementById("client-form").addEventListener("submit", (e) => {
     }
 
     bookings[selectedSide][selectedDate].push({ name, phone, time, note });
+    
+    fetch('https://lash-bot.rizhukrr.workers.dev/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        name: name,
+        phone: phone,
+        time: time,
+        date: selectedDate
+        })
+    })
+    .then(r => r.json())
+    .then(d => console.log('Уведомление отправлено:', d))
+    .catch(e => console.error('Ошибка отправки:', e));
 
     saveData();
     renderBookingsList();
